@@ -1088,6 +1088,64 @@
     </div>
 
     <script>
+        /*
+         Client-side linear regression fallback
+         This allows the static GitHub Pages site to compute predictions without a backend.
+         The values below are extracted from the trained LinearRegression model and scaler.
+        */
+        const linearModel = {
+            coef: [-0.6870837636577862, 8.499936431957648, -2.4135824704054336, 4.296298398039324, 55.02693636300151, 18.993007272897767, -13.179475904843242],
+            intercept: 89.09541666666658,
+            mean: [0.4964166666666667, 42.71666666666667, 174.40166666666667, 74.90591666666667, 15.483916666666667, 95.47591666666666, 40.02199166666667],
+            scale: [0.49998715955734524, 16.948585650595025, 14.226114387124671, 15.005906559076069, 8.302192962889718, 9.540095386999838, 0.7778949371630393],
+            feature_names: ["Gender","Age","Height","Weight","Duration","Heart_Rate","Body_Temp"],
+            model_used: 'linear_regression',
+            confidence_score: 0.9672937151257295
+        };
+
+        function predictWithLinear(formData) {
+            // Map to feature order used during training
+            const gender = formData.gender === 'male' ? 1 : 0;
+            const x = [
+                gender,
+                Number(formData.age),
+                Number(formData.height),
+                Number(formData.weight),
+                Number(formData.duration),
+                Number(formData.heart_rate),
+                Number(formData.body_temp)
+            ];
+
+            // Scale
+            const xScaled = x.map((v, i) => (v - linearModel.mean[i]) / linearModel.scale[i]);
+
+            // Dot product + intercept
+            let pred = linearModel.intercept;
+            for (let i = 0; i < linearModel.coef.length; i++) {
+                pred += linearModel.coef[i] * xScaled[i];
+            }
+
+            pred = Math.max(0, pred);
+
+            return {
+                calories_burned: pred,
+                model_used: linearModel.model_used,
+                confidence_score: linearModel.confidence_score
+            };
+        }
+
+        function showLocalResult(data) {
+            document.getElementById('caloriesValue').textContent = Math.round(data.calories_burned);
+            document.getElementById('modelInfo').textContent = `Model: ${data.model_used} | Confidence: ${(data.confidence_score * 100).toFixed(1)}%`;
+
+            setTimeout(() => {
+                document.getElementById('confidenceFill').style.width = (data.confidence_score * 100) + '%';
+            }, 100);
+
+            const resultCard = document.getElementById('result');
+            resultCard.style.display = 'block';
+            resultCard.classList.add('show');
+        }
         // Show form card, update icon, and animate layout when gender is selected
         document.getElementById('gender').addEventListener('change', function() {
             const selectedGender = this.value;
@@ -1166,6 +1224,7 @@
             document.querySelector('.loading').style.display = 'block';
 
             try {
+                // Try calling backend API first (works when deployed with backend)
                 const response = await fetch('/predict', {
                     method: 'POST',
                     headers: {
@@ -1174,10 +1233,10 @@
                     body: JSON.stringify(formData)
                 });
 
-                const data = await response.json();
-
                 if (response.ok) {
-                    // Display results
+                    const data = await response.json();
+
+                    // Display results from backend
                     document.getElementById('caloriesValue').textContent = Math.round(data.calories_burned);
                     document.getElementById('modelInfo').textContent = `Model: ${data.model_used} | Confidence: ${(data.confidence_score * 100).toFixed(1)}%`;
 
@@ -1191,12 +1250,14 @@
                     resultCard.style.display = 'block';
                     resultCard.classList.add('show');
                 } else {
-                    document.getElementById('errorMessage').textContent = data.detail || 'An error occurred';
-                    document.getElementById('errorMessage').style.display = 'block';
+                    // If backend returned an error status, fall back to client-side linear model
+                    const data = predictWithLinear(formData);
+                    showLocalResult(data);
                 }
             } catch (error) {
-                document.getElementById('errorMessage').textContent = 'Network error. Please try again.';
-                document.getElementById('errorMessage').style.display = 'block';
+                // Network error (e.g. GitHub Pages). Fall back to client-side linear model so the page works purely static.
+                const data = predictWithLinear(formData);
+                showLocalResult(data);
             } finally {
                 document.querySelector('.loading').style.display = 'none';
             }
