@@ -7,7 +7,7 @@ An end-to-end machine learning application that predicts calories burned during 
 ![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.3-orange)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
 
-#Link to the Web Page:
+# Link to the Web Page: https://urk23cs1245.github.io/calories-ml/static/
 
 ## 📋 Table of Contents
 - [Features](#features)
