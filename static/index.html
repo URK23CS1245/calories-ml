@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -964,13 +965,13 @@
                          class="default-animation">
 
                     <!-- Gender-specific images (hidden initially) -->
-                <img id="femaleIcon"
-                    src="static/female-avatar.png"
+                    <img id="femaleIcon"
+                         src="female-avatar.png"
                          alt="Female User"
                          class="illustration"
                          style="display: none;">
-                <img id="maleIcon"
-                    src="static/male-avatar.png"
+                    <img id="maleIcon"
+                         src="male-avatar.png"
                          alt="Male User"
                          class="illustration"
                          style="display: none;">
@@ -1265,3 +1266,1211 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Tracking Features | Calorie Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-green: #8BA888;
+            --bg-sage: #9BB59A;
+            --card-beige: #F5F1E8;
+            --card-white: #FFFFFF;
+            --accent-dark: #2D3A2E;
+            --accent-orange: #E8956F;
+            --accent-green: #6B8E6A;
+            --text-dark: #2D2D2D;
+            --text-light: #6B6B6B;
+            --text-muted: #9B9B9B;
+            --success: #6B8E6A;
+            --error: #E8956F;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-green);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g transform="rotate(-25 16 16)"><ellipse cx="16" cy="18" rx="6" ry="10" fill="%23CD853F" stroke="%23654321" stroke-width="1.5"/><line x1="13" y1="14" x2="13" y2="16" stroke="%23654321" stroke-width="1"/><line x1="16" y1="15" x2="16" y2="18" stroke="%23654321" stroke-width="1"/><line x1="19" y1="14" x2="19" y2="16" stroke="%23654321" stroke-width="1"/><path d="M14 8 Q13 6 11 7 Q10 5 12 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/><path d="M16 7 Q15 5 17 4 Q18 3 19 5" fill="%238BA888" stroke="%232D5016" stroke-width="1"/><path d="M18 8 Q19 6 21 7 Q22 5 20 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/></g></svg>') 8 8, auto;
+        }
+
+        /* Animated Background Elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(94, 234, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(244, 114, 182, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.08) 0%, transparent 60%);
+            animation: backgroundMove 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes backgroundMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(5%, 5%) rotate(120deg); }
+            66% { transform: translate(-5%, -5%) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Card Grid Layout */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Individual Card Styles */
+        .card {
+            background: var(--card-beige);
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 3s ease-in-out infinite;
+        }
+
+        /* Shimmer effect on cards */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            animation: shimmer 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card:hover {
+            transform: translateY(-15px) !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            animation: none;
+        }
+
+        /* Floating particles in background */
+        .floating-icon {
+            position: fixed;
+            font-size: 2.5em;
+            opacity: 0.2;
+            animation: float 20s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translateY(-50px) rotate(180deg);
+                opacity: 0.4;
+            }
+        }
+
+        /* Welcome Card with Illustration */
+        .welcome-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: flex-start;
+            min-height: 600px;
+            padding-top: 40px;
+            background: linear-gradient(135deg,
+                var(--card-beige) 0%,
+                rgba(245, 241, 232, 0.95) 50%,
+                var(--card-beige) 100%);
+        }
+
+        .welcome-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header-section {
+            margin-bottom: 30px;
+            animation: titleBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes titleBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .illustration-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            margin: 25px 0;
+            transition: all 0.8s ease;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Removed background glow effects */
+
+        .illustration-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .default-animation {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+            opacity: 1;
+            transition: all 0.5s ease;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .default-animation.hide {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .illustration {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.5) rotate(-10deg);
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.35))
+                    brightness(1.15)
+                    contrast(1.2)
+                    saturate(1.4);
+        }
+
+        .illustration.show {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            animation: profileBounce 3s ease-in-out infinite,
+                       profileGlow 2s ease-in-out infinite,
+                       profileFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes profileBounce {
+            0%, 100% {
+                transform: scale(1) translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: scale(1.08) translateY(-12px) rotate(-3deg);
+            }
+            50% {
+                transform: scale(1.05) translateY(-8px) rotate(0deg);
+            }
+            75% {
+                transform: scale(1.08) translateY(-12px) rotate(3deg);
+            }
+        }
+
+        @keyframes profileGlow {
+            0%, 100% {
+                filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.25))
+                        brightness(1.1)
+                        contrast(1.15)
+                        saturate(1.3);
+            }
+            50% {
+                filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.3))
+                        brightness(1.15)
+                        contrast(1.2)
+                        saturate(1.4);
+            }
+        }
+
+        @keyframes profileFloat {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-15px) scale(1.03);
+            }
+        }
+
+        .gender-section {
+            width: 100%;
+            transition: all 0.5s ease;
+        }
+
+        .gender-section.moved-down {
+            margin-top: auto;
+            padding-bottom: 20px;
+        }
+
+        .card-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.4em;
+            font-weight: 800;
+            background: linear-gradient(135deg,
+                var(--accent-dark) 0%,
+                var(--accent-green) 50%,
+                var(--accent-dark) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+            animation: textShine 3s ease-in-out infinite;
+        }
+
+        @keyframes textShine {
+            0%, 100% {
+                background-position: 0% center;
+            }
+            50% {
+                background-position: 100% center;
+            }
+        }
+
+        .card-subtitle {
+            font-size: 1.05em;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.5;
+            font-weight: 500;
+            animation: subtitleFade 2s ease-in-out infinite;
+        }
+
+        @keyframes subtitleFade {
+            0%, 100% {
+                opacity: 0.8;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-2px);
+            }
+        }
+
+        /* Form Card */
+        .form-card {
+            background: var(--card-beige);
+            transition: all 0.5s ease;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .form-card.show {
+            display: block;
+        }
+
+        .form-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        /* Step-by-step form reveal */
+        .form-step {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .form-step.active {
+            max-height: 2000px;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .label-text {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .value-display {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-dark);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--card-beige);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.8em;
+            min-width: 70px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--card-white);
+            border: none;
+            border-radius: 12px;
+            color: var(--text-dark);
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g transform="rotate(-25 16 16)"><ellipse cx="16" cy="18" rx="6" ry="10" fill="%23CD853F" stroke="%23654321" stroke-width="1.5"/><line x1="13" y1="14" x2="13" y2="16" stroke="%23654321" stroke-width="1"/><line x1="16" y1="15" x2="16" y2="18" stroke="%23654321" stroke-width="1"/><line x1="19" y1="14" x2="19" y2="16" stroke="%23654321" stroke-width="1"/><path d="M14 8 Q13 6 11 7 Q10 5 12 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/><path d="M16 7 Q15 5 17 4 Q18 3 19 5" fill="%238BA888" stroke="%232D5016" stroke-width="1"/><path d="M18 8 Q19 6 21 7 Q22 5 20 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/></g></svg>') 8 8, pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        select:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        select:focus {
+            outline: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: rainbowGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes rainbowGlow {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(139, 168, 136, 0.4);
+            }
+            33% {
+                box-shadow: 0 4px 12px rgba(155, 181, 154, 0.4);
+            }
+            66% {
+                box-shadow: 0 4px 12px rgba(107, 142, 106, 0.4);
+            }
+        }
+
+        select option {
+            background: var(--card-white);
+            color: var(--text-dark);
+            padding: 12px;
+        }
+
+        .range-container {
+            position: relative;
+            padding: 8px 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: var(--card-white);
+            border-radius: 10px;
+            outline: none;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g transform="rotate(-25 16 16)"><ellipse cx="16" cy="18" rx="6" ry="10" fill="%23CD853F" stroke="%23654321" stroke-width="1.5"/><line x1="13" y1="14" x2="13" y2="16" stroke="%23654321" stroke-width="1"/><line x1="16" y1="15" x2="16" y2="18" stroke="%23654321" stroke-width="1"/><line x1="19" y1="14" x2="19" y2="16" stroke="%23654321" stroke-width="1"/><path d="M14 8 Q13 6 11 7 Q10 5 12 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/><path d="M16 7 Q15 5 17 4 Q18 3 19 5" fill="%238BA888" stroke="%232D5016" stroke-width="1"/><path d="M18 8 Q19 6 21 7 Q22 5 20 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/></g></svg>') 8 8, pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-dark);
+            border: 3px solid var(--card-beige);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+            animation: thumbPulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes thumbPulse {
+            0%, 100% {
+                box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(139, 168, 136, 0.4);
+            }
+            50% {
+                box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(139, 168, 136, 0);
+            }
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--accent-dark);
+            border: 3px solid var(--card-beige);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--accent-dark);
+            color: var(--card-beige);
+            border: none;
+            border-radius: 14px;
+            font-size: 1em;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g transform="rotate(-25 16 16)"><ellipse cx="16" cy="18" rx="6" ry="10" fill="%23CD853F" stroke="%23654321" stroke-width="1.5"/><line x1="13" y1="14" x2="13" y2="16" stroke="%23654321" stroke-width="1"/><line x1="16" y1="15" x2="16" y2="18" stroke="%23654321" stroke-width="1"/><line x1="19" y1="14" x2="19" y2="16" stroke="%23654321" stroke-width="1"/><path d="M14 8 Q13 6 11 7 Q10 5 12 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/><path d="M16 7 Q15 5 17 4 Q18 3 19 5" fill="%238BA888" stroke="%232D5016" stroke-width="1"/><path d="M18 8 Q19 6 21 7 Q22 5 20 4" fill="%236B8E6A" stroke="%232D5016" stroke-width="1"/></g></svg>') 8 8, pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-transform: capitalize;
+            position: relative;
+            overflow: hidden;
+            animation: buttonGlow 2s ease-in-out infinite;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                box-shadow: 0 6px 20px rgba(107, 142, 106, 0.4);
+            }
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            background: #3d4a3e;
+            animation: none;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--accent-dark);
+        }
+
+        /* Result Card */
+        .result {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card {
+            background: var(--card-white);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12),
+                        0 0 40px rgba(139, 168, 136, 0.2);
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+            animation: resultGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes resultGlow {
+            0%, 100% {
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12),
+                            0 0 40px rgba(139, 168, 136, 0.2);
+            }
+            50% {
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18),
+                            0 0 60px rgba(107, 142, 106, 0.4);
+            }
+        }
+
+        .result-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Animated gradient border for result card */
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg,
+                var(--accent-green),
+                var(--bg-sage),
+                var(--accent-dark),
+                var(--bg-green),
+                var(--accent-green));
+            background-size: 400% 400%;
+            border-radius: 22px;
+            z-index: -1;
+            animation: gradientBorder 4s ease infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes gradientBorder {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Floating particles around result */
+        .result-card::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image:
+                radial-gradient(circle, rgba(139, 168, 136, 0.4) 2px, transparent 2px),
+                radial-gradient(circle, rgba(107, 142, 106, 0.3) 1px, transparent 1px),
+                radial-gradient(circle, rgba(155, 181, 154, 0.5) 3px, transparent 3px);
+            background-size: 50px 50px, 80px 80px, 100px 100px;
+            background-position: 0 0, 40px 40px, 80px 80px;
+            animation: particlesMove 20s linear infinite;
+            border-radius: 20px;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        @keyframes particlesMove {
+            0% {
+                background-position: 0 0, 40px 40px, 80px 80px;
+            }
+            100% {
+                background-position: 100px 100px, 140px 140px, 180px 180px;
+            }
+        }
+
+        .celebration-gif {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 15px;
+            animation: celebrationBounce 1s ease-in-out infinite, glowPulse 2s ease-in-out infinite;
+            box-shadow: 0 8px 30px rgba(139, 168, 136, 0.4);
+        }
+
+        @keyframes celebrationBounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-10px) rotate(-5deg);
+            }
+            75% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                box-shadow: 0 8px 30px rgba(139, 168, 136, 0.4);
+            }
+            50% {
+                box-shadow: 0 12px 40px rgba(107, 142, 106, 0.6);
+            }
+        }
+
+        .result h2 {
+            color: var(--text-muted);
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: headingFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes headingFloat {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-3px);
+                opacity: 1;
+            }
+        }
+
+        .calories-value {
+            font-size: 4em;
+            font-weight: 800;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--accent-dark);
+            margin: 15px 0;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            animation: numberPop 0.6s ease-out, colorShift 3s ease-in-out infinite;
+        }
+
+        @keyframes numberPop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes colorShift {
+            0%, 100% {
+                color: var(--accent-dark);
+                text-shadow: 0 0 20px rgba(45, 58, 46, 0.2);
+            }
+            50% {
+                color: var(--accent-green);
+                text-shadow: 0 0 30px rgba(107, 142, 106, 0.5);
+            }
+        }
+
+        .calories-value::after {
+            content: ' cal';
+            font-size: 0.4em;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .model-info {
+            color: var(--text-light);
+            font-size: 0.85em;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--card-beige);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg,
+                var(--accent-green) 0%,
+                var(--bg-sage) 50%,
+                var(--accent-green) 100%);
+            background-size: 200% 100%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+            animation: gradientSlide 2s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(107, 142, 106, 0.3);
+        }
+
+        @keyframes gradientSlide {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .error {
+            background: rgba(232, 149, 111, 0.15);
+            border: 2px solid var(--error);
+            color: var(--text-dark);
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .spinner {
+            border: 3px solid var(--card-beige);
+            border-top: 3px solid var(--accent-dark);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 35px 30px;
+            }
+
+            .welcome-card {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .card {
+                padding: 30px 25px;
+                border-radius: 20px;
+            }
+
+            .card-title {
+                font-size: 1.6em;
+            }
+
+            .form-header h2 {
+                font-size: 1.4em;
+            }
+
+            .calories-value {
+                font-size: 3.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Food Icons -->
+    <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;">🍎</div>
+    <div class="floating-icon" style="top: 20%; right: 15%; animation-delay: 3s;">🥗</div>
+    <div class="floating-icon" style="bottom: 15%; left: 20%; animation-delay: 6s;">🥑</div>
+    <div class="floating-icon" style="bottom: 25%; right: 10%; animation-delay: 9s;">🍊</div>
+    <div class="floating-icon" style="top: 50%; left: 5%; animation-delay: 12s;">🥕</div>
+    <div class="floating-icon" style="top: 60%; right: 8%; animation-delay: 15s;">🍇</div>
+    <div class="floating-icon" style="top: 35%; right: 25%; animation-delay: 4s;">🥦</div>
+    <div class="floating-icon" style="bottom: 40%; left: 15%; animation-delay: 8s;">🍓</div>
+
+    <!-- Additional Floating Elements for More Life -->
+    <div class="floating-icon" style="top: 75%; left: 30%; animation-delay: 2s; font-size: 2em;">🥤</div>
+    <div class="floating-icon" style="top: 15%; left: 50%; animation-delay: 5s; font-size: 3em;">🍏</div>
+    <div class="floating-icon" style="bottom: 30%; right: 30%; animation-delay: 7s; font-size: 2.2em;">🥬</div>
+    <div class="floating-icon" style="top: 40%; left: 25%; animation-delay: 10s; font-size: 2.8em;">🫐</div>
+
+    <div class="container">
+        <div class="cards-grid">
+            <!-- Welcome Card with Gender Selection -->
+            <div class="card welcome-card">
+                <!-- Header Section (Always at top) -->
+                <div class="card-header-section">
+                    <h1 class="card-title">Calories Tracker</h1>
+                    <p class="card-subtitle">Track your fitness journey</p>
+                </div>
+
+                <!-- Illustration Container (Shows default GIF initially) -->
+                <div class="illustration-container">
+                    <!-- Default animated GIF (shown initially) -->
+                    <img id="defaultAnimation"
+                         src="https://64.media.tumblr.com/8dc840a71fb719050473588049b7ee50/tumblr_ppqy2rl0331xpd777o1_540.gif"
+                         alt="Diet Animation"
+                         class="default-animation">
+
+                    <!-- Gender-specific images (hidden initially) -->
+                    <img id="femaleIcon"
+                         src="female-avatar.png"
+                         alt="Female User"
+                         class="illustration"
+                         style="display: none;">
+                    <img id="maleIcon"
+                         src="male-avatar.png"
+                         alt="Male User"
+                         class="illustration"
+                         style="display: none;">
+                </div>
+
+                <!-- Gender Selection Section (Moves down after selection) -->
+                <div id="genderSection" class="gender-section">
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Card (Hidden initially, shows after gender selection) -->
+            <div id="formCard" class="card form-card">
+                <div class="form-header">
+                    <p>Enter your activity details</p>
+                </div>
+
+                    <form id="predictionForm">
+                        <div class="form-group">
+                            <div class="label-row">
+                                <span class="label-text">Age</span>
+                                <span class="value-display" id="ageValue">25 years</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="age" name="age" min="10" max="100" value="25" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <span class="label-text">Height</span>
+                                <span class="value-display" id="heightValue">170 cm</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="height" name="height" min="100" max="250" value="170" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <span class="label-text">Weight</span>
+                                <span class="value-display" id="weightValue">70 kg</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="weight" name="weight" min="30" max="200" value="70" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <span class="label-text">Duration</span>
+                                <span class="value-display" id="durationValue">30 min</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="duration" name="duration" min="1" max="60" value="30" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <span class="label-text">Heart Rate</span>
+                                <span class="value-display" id="heartRateValue">110 bpm</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="heart_rate" name="heart_rate" min="60" max="200" value="110" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <span class="label-text">Body Temp</span>
+                                <span class="value-display" id="bodyTempValue">40.0 °C</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="body_temp" name="body_temp" min="36" max="42" value="40" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <button type="submit">Calculate Calories</button>
+                    </form>
+
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <div class="error" id="errorMessage"></div>
+                </div>
+
+                <!-- Result Card (Third Card) -->
+                <div class="card result" id="result">
+                    <div class="result-card">
+                        <h2>Calories Burned</h2>
+
+                        <!-- Celebration GIF -->
+                        <img src="https://i.pinimg.com/originals/de/cb/f6/decbf6ac417baf1dda5c050439755489.gif"
+                             alt="Celebration"
+                             class="celebration-gif">
+
+                        <div class="calories-value" id="caloriesValue">0</div>
+                        <div class="model-info" id="modelInfo">Calories burned during exercise</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show form card, update icon, and animate layout when gender is selected
+        document.getElementById('gender').addEventListener('change', function() {
+            const selectedGender = this.value;
+
+            if (selectedGender) {
+                // Hide the default animation GIF
+                const defaultAnimation = document.getElementById('defaultAnimation');
+                defaultAnimation.classList.add('hide');
+
+                setTimeout(() => {
+                    defaultAnimation.style.display = 'none';
+                }, 500);
+
+                // Show the form card
+                document.getElementById('formCard').classList.add('show');
+
+                // Move gender section down
+                document.getElementById('genderSection').classList.add('moved-down');
+
+                // Hide all icons first
+                const maleIcon = document.getElementById('maleIcon');
+                const femaleIcon = document.getElementById('femaleIcon');
+
+                maleIcon.style.display = 'none';
+                femaleIcon.style.display = 'none';
+                maleIcon.classList.remove('show');
+                femaleIcon.classList.remove('show');
+
+                // Show the appropriate icon with animation
+                setTimeout(() => {
+                    if (selectedGender === 'male') {
+                        maleIcon.style.display = 'block';
+                        setTimeout(() => maleIcon.classList.add('show'), 50);
+                    } else if (selectedGender === 'female') {
+                        femaleIcon.style.display = 'block';
+                        setTimeout(() => femaleIcon.classList.add('show'), 50);
+                    }
+                }, 100);
+            }
+        });
+
+        // Update display values for range inputs
+        const rangeInputs = {
+            age: { element: document.getElementById('age'), display: document.getElementById('ageValue'), unit: ' years' },
+            height: { element: document.getElementById('height'), display: document.getElementById('heightValue'), unit: ' cm' },
+            weight: { element: document.getElementById('weight'), display: document.getElementById('weightValue'), unit: ' kg' },
+            duration: { element: document.getElementById('duration'), display: document.getElementById('durationValue'), unit: ' min' },
+            heart_rate: { element: document.getElementById('heart_rate'), display: document.getElementById('heartRateValue'), unit: ' bpm' },
+            body_temp: { element: document.getElementById('body_temp'), display: document.getElementById('bodyTempValue'), unit: ' °C' }
+        };
+
+        Object.keys(rangeInputs).forEach(key => {
+            const { element, display, unit } = rangeInputs[key];
+            element.addEventListener('input', function() {
+                display.textContent = this.value + unit;
+            });
+        });
+
+        // Form submission
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = {
+                gender: document.getElementById('gender').value,
+                age: parseInt(document.getElementById('age').value),
+                height: parseFloat(document.getElementById('height').value),
+                weight: parseFloat(document.getElementById('weight').value),
+                duration: parseInt(document.getElementById('duration').value),
+                heart_rate: parseInt(document.getElementById('heart_rate').value),
+                body_temp: parseFloat(document.getElementById('body_temp').value)
+            };
+
+            // Hide previous results and errors
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.querySelector('.loading').style.display = 'block';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Display results
+                    document.getElementById('caloriesValue').textContent = Math.round(data.calories_burned);
+                    document.getElementById('modelInfo').textContent = `Model: ${data.model_used} | Confidence: ${(data.confidence_score * 100).toFixed(1)}%`;
+
+                    // Animate confidence bar
+                    setTimeout(() => {
+                        document.getElementById('confidenceFill').style.width = (data.confidence_score * 100) + '%';
+                    }, 100);
+
+                    // Show result card with animation
+                    const resultCard = document.getElementById('result');
+                    resultCard.style.display = 'block';
+                    resultCard.classList.add('show');
+                } else {
+                    document.getElementById('errorMessage').textContent = data.detail || 'An error occurred';
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = 'Network error. Please try again.';
+                document.getElementById('errorMessage').style.display = 'block';
+            } finally {
+                document.querySelector('.loading').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+>>>>>>> cc6cb01 (Fix: Update image paths for GitHub Pages deployment)
